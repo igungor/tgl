@@ -61,7 +61,7 @@ def _tgl_upd_secret_chat_update_cb(tls, chat, flags):
     pass
 
 
-@ffi.callback("void(struct tgl_state *, struct tgl_message *")
+@ffi.callback("void(struct tgl_state *, struct tgl_message *)")
 def _tgl_upd_msg_receive_cb(tls, msg):
     pass
 
@@ -150,7 +150,7 @@ def _tgl_mtproto_execute_cb(tls, conn, op, len_):
 
 ################### timer callbacks ##########################
 
-@ffi.callback("tgl_timer *(struct tgl_state *, void (*)(struct tgl_state *,void *), void *)")
+@ffi.callback("struct tgl_timer *(struct tgl_state *, void (*)(struct tgl_state *,void *), void *)")
 def _tgl_timer_alloc_cb(tls, cb, arg):
     pass
 
