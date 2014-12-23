@@ -148,6 +148,31 @@ def _tgl_mtproto_execute_cb(tls, conn, op, len_):
     pass
 
 
+################### timer callbacks ##########################
+
+@ffi.callback("tgl_timer *(struct tgl_state *, void (*)(struct tgl_state *,void *), void *)")
+def _tgl_timer_alloc_cb(tls, cb, arg):
+    pass
+
+
+@ffi.callback("void(struct tgl_timer *, double )")
+def _tgl_timer_insert_cb(timer, timeout):
+    pass
+
+
+@ffi.callback("void(struct tgl_timer *)")
+def _tgl_timer_remove_cb(timer):
+    pass
+
+
+@ffi.callback("void(struct tgl_timer *)")
+def _tgl_timer_free_cb(timer):
+    pass
+
+
+################ callback struct generators ################################
+
+
 def generate_tgl_update():
     cb = ffi.new('struct tgl_update_callback *')
     cb.new_msg = _tgl_upd_new_msg_cb
@@ -169,6 +194,8 @@ def generate_tgl_update():
     cb.user_status_update = _tgl_upd_user_status_update_cb
     cb.create_print_name = _tgl_upd_create_print_name_cb
 
+    return cb
+
 
 def generate_tgl_net():
     cb = ffi.new('struct tgl_net_methods *')
@@ -182,6 +209,7 @@ def generate_tgl_net():
     cb.get_session = _tgl_net_get_session_cb
     cb.create_connection = _tgl_net_create_connection_cb
 
+    return cb
 
 def generate_tgl_mtproto():
     cb = ffi.new('struct tgl_mtproto_methods *')
@@ -189,5 +217,15 @@ def generate_tgl_mtproto():
     cb.close = _tgl_mtproto_close_cb
     cb.execute = _tgl_mtproto_execute_cb
 
+    return cb
 
+
+def generate_tgl_timer():
+    cb = ffi.new('struct tgl_timer_methods *')
+    cb.alloc = _tgl_timer_alloc_cb
+    cb.insert = _tgl_timer_insert_cb
+    cb.remove = _tgl_timer_remove_cb
+    cb.free = _tgl_timer_free_cb
+
+    return cb
 
