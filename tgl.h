@@ -136,7 +136,7 @@ struct tgl_timer_methods {
 #define TGL_MAX_RSA_KEYS_NUM 10
 // Do not modify this structure, unless you know what you do
 
-#pragma pack(push,4)
+//#pragma pack(push,4)
 struct tgl_state {
   int our_id; // ID of logged in user
   int encr_root;
@@ -214,7 +214,7 @@ struct tgl_state {
   int app_id;
   char *app_hash;
 };
-#pragma pack(pop)
+//#pragma pack(pop)
 //extern struct tgl_state tgl_state;
 
 void tgl_reopen_binlog_for_writing (struct tgl_state *TLS);
