@@ -560,6 +560,7 @@ struct tgl_state;
 struct tgl_update_callback {
   void (*new_msg)(struct tgl_state *TLS, struct tgl_message *M);
   void (*marked_read)(struct tgl_state *TLS, int num, struct tgl_message *list[]);
+  void (*logprintf)(void);
 
   void (*type_notification)(struct tgl_state *TLS, struct tgl_user *U, enum tgl_typing_status status);
   void (*type_in_chat_notification)(struct tgl_state *TLS, struct tgl_user *U, struct tgl_chat *C, enum tgl_typing_status status);

@@ -35,6 +35,7 @@ class PrintEnumsVisitor(pycparser.c_ast.NodeVisitor):
 def preprocess(source, keep_defines=False):
 
     #remove stuff not supported by pycparser or cffi
+    #TODO: this damages the update_callback struct, needs manual edit
     source = re.sub(r'^.*__attribute__.*$', '', source, flags=re.MULTILINE)
     source = re.sub(
         '/\*.*?\*/'
