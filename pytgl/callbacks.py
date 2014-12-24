@@ -1,4 +1,4 @@
-from . import ffi, tgl
+from . import ffi
 
 ###################### update callbacks #########################
 @ffi.callback("void(struct tgl_state *, struct tgl_message *)")
@@ -51,7 +51,7 @@ def _tgl_upd_chat_update_cb(tls, chat, flags):
     pass
 
 
-@ffi.callback("void(struct tgl_state *, struct tgl_chat *, unsigned)")
+@ffi.callback("void(struct tgl_state *, struct tgl_user *, unsigned)")
 def _tgl_upd_user_update_cb(tls, chat, flags):
     pass
 
@@ -174,14 +174,19 @@ def _tgl_timer_free_cb(timer):
 
 
 def generate_tgl_update():
+    from cffi import FFI
+    ffi_ = FFI()
+    ffi_.cdef("""int printf(const char *format, ...);""")
+    C = ffi_.dlopen(None)
+
     cb = ffi.new('struct tgl_update_callback *')
     cb.new_msg = _tgl_upd_new_msg_cb
     cb.marked_read = _tgl_upd_marked_read_cb
-    #cb.logprintf =
+    cb.logprintf = C.printf
     cb.type_notification = _tgl_upd_type_notification_cb
     cb.type_in_chat_notification = _tgl_upd_type_in_chat_notification_cb
     cb.type_in_secret_chat_notification = _tgl_upd_type_in_secret_chat_notification_cb
-    cb.status_notification = _tgl_upd_notification_cb
+    cb.status_notification = _tgl_upd_status_notification_cb
     cb.user_registered = _tgl_upd_user_registered_cb
     cb.user_activated = _tgl_upd_user_activated_cb
     cb.new_authorization = _tgl_upd_new_authorization_cb
@@ -212,7 +217,7 @@ def generate_tgl_net():
     return cb
 
 def generate_tgl_mtproto():
-    cb = ffi.new('struct tgl_mtproto_methods *')
+    cb = ffi.new('struct mtproto_methods *')
     cb.ready = _tgl_mtproto_ready_cb
     cb.close = _tgl_mtproto_close_cb
     cb.execute = _tgl_mtproto_execute_cb

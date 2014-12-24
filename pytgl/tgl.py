@@ -11,10 +11,10 @@ class TglState(object):
         tgl.tgl_set_callback(self._state, cb)
 
     def set_net_methods(self, m):
-        tgl.tgl_set_net_methods(self._state, m)
+        self._state.net_methods = m
 
     def set_timer_methods(self, m):
-        tgl.tgl_set_timer_methods(self._state, m)
+        self._state.timer_methods = m
 
     def set_download_directory(self, dd):
         tgl.tgl_set_download_directory(self._state, dd)
