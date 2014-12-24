@@ -5,7 +5,6 @@ from .callbacks import *
 class TglState(object):
     def __init__(self):
         self._state = ffi.new('struct tgl_state *')
-        self._update_cb = ffi.new('struct tgl_update_callback *')
         self._download_dir = None
         self._appid = -1
         self._apphash = None
