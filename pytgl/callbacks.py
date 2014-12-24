@@ -170,6 +170,37 @@ def _tgl_timer_free_cb(timer):
     pass
 
 
+##################### serialize callbacks ######################
+
+@ffi.callback("int(struct tgl_state *)")
+def _tgl_serialize_load_auth_cb(tls):
+    pass
+
+
+@ffi.callback("int(struct tgl_state *)")
+def _tgl_serialize_load_state_cb(tls):
+    pass
+
+
+@ffi.callback("int(struct tgl_state *)")
+def _tgl_serialize_load_secrets_chat_cb(tls):
+    pass
+
+
+@ffi.callback("int(struct tgl_state *)")
+def _tgl_serialize_store_auth_cb(tls):
+    pass
+
+
+@ffi.callback("int(struct tgl_state *)")
+def _tgl_serialize_store_state_cb(tls):
+    pass
+
+
+@ffi.callback("int(struct tgl_state *)")
+def _tgl_serialize_store_secret_chats_cb(tls):
+    pass
+
 ################ callback struct generators ################################
 
 
@@ -231,6 +262,18 @@ def generate_tgl_timer():
     cb.insert = _tgl_timer_insert_cb
     cb.remove = _tgl_timer_remove_cb
     cb.free = _tgl_timer_free_cb
+
+    return cb
+
+
+def generate_tgl_serialize():
+    cb = ffi.new('struct tgl_serialize_methods *')
+    cb.load_auth = _tgl_serialize_load_auth_cb
+    cb.load_state = _tgl_serialize_load_state_cb
+    cb.load_secret_chats = _tgl_serialize_load_secrets_chat_cb
+    cb.store_auth = _tgl_serialize_store_auth_cb
+    cb.store_state = _tgl_serialize_store_state_cb
+    cb.store_secret_chats = _tgl_serialize_store_secret_chats_cb
 
     return cb
 
