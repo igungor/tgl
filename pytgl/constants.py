@@ -73,6 +73,14 @@ tgl_sce_committed = 3
 
 _TGL_HEADERS = r"""
 typedef unsigned long size_t;
+struct tgl_serialize_callback {
+    const char *(*get_auth_key_filename) (void);
+    const char *(*get_state_filename) (void);
+    const char *(*get_secret_chat_filename) (void);
+};
+
+extern struct tgl_serialize_methods tgl_file_methods;
+extern struct tgl_serialize_callback tgl_file_callback;
 #define FLAG_MESSAGE_EMPTY 1
 #define FLAG_DELETED 2
 #define FLAG_FORBIDDEN 4
@@ -592,6 +600,15 @@ struct tgl_net_methods {
   struct connection *(*create_connection) (struct tgl_state *TLS, const char *host, int port, struct tgl_session *session, struct tgl_dc *dc, struct mtproto_methods *methods);
 };
 
+struct tgl_serialize_methods {
+    int (*load_auth) (struct tgl_state *TLS);
+    int (*load_state) (struct tgl_state *TLS);
+    int (*load_secret_chats) (struct tgl_state *TLS);
+    int (*store_auth) (struct tgl_state *TLS);
+    int (*store_state) (struct tgl_state *TLS);
+    int (*store_secret_chats) (struct tgl_state *TLS);
+};
+
 struct mtproto_methods {
   int (*ready) (struct tgl_state *TLS, struct connection *c);
   int (*close) (struct tgl_state *TLS, struct connection *c);
@@ -651,6 +668,7 @@ struct tgl_state {
 
   struct tgl_update_callback callback;
   struct tgl_net_methods *net_methods;
+  struct tgl_serialize_methods *serialize_methods;
   void *ev_base;
 
   char *rsa_key_list[TGL_MAX_RSA_KEYS_NUM];

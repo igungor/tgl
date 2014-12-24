@@ -73,6 +73,7 @@ def generate(tgl_source_dir):
 typedef unsigned long size_t;
 '''
 
+    source += read_header(tgl_source_dir, 'tgl-serialize.h')
     source += read_header(tgl_source_dir, 'tgl-layout.h')
     source += read_header(tgl_source_dir, 'tgl.h')
 
