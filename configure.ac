@@ -2,10 +2,17 @@ AC_PREREQ([2.68])
 AC_INIT([telegram-cli], [1.0])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
+AM_INIT_AUTOMAKE
 
 m4_include([m4_ax_check_openssl.m4])
 m4_include([m4_ax_check_zlib.m4])
 m4_include([m4-ax_gcc_builtin.m4])
+
+AC_CONFIG_MACRO_DIR([m4])
+LT_INIT([
+    disable-static
+    pic-only
+])
 
 # Checks for programs.
 AC_PROG_CC
