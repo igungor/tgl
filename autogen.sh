@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-autoreconf --install --symlink
+autoreconf --install
 
 libdir() {
         echo $(cd $1/$(gcc -print-multi-os-directory); pwd)
