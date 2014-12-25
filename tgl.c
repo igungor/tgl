@@ -45,6 +45,14 @@ void tgl_set_auth_file_path (struct tgl_state *TLS, const char *path) {
   TLS->auth_file = tstrdup (path);
 }
 
+void tgl_set_state_file_path (struct tgl_state *TLS, const char *path) {
+  TLS->state_file = tstrdup (path);
+}
+
+void tgl_set_secret_chat_file_path (struct tgl_state *TLS, const char *path) {
+  TLS->secret_chat_file = tstrdup (path);
+}
+
 void tgl_set_download_directory (struct tgl_state *TLS, const char *path) {
   TLS->downloads_directory = tstrdup (path);
 }

@@ -80,7 +80,6 @@ struct tgl_serialize_callback {
 };
 
 extern struct tgl_serialize_methods tgl_file_methods;
-extern struct tgl_serialize_callback tgl_file_callback;
 #define FLAG_MESSAGE_EMPTY 1
 #define FLAG_DELETED 2
 #define FLAG_FORBIDDEN 4
@@ -664,6 +663,8 @@ struct tgl_state {
 
   char *binlog_name;
   char *auth_file;
+  char *state_file;
+  char *secret_chat_file;
   char *downloads_directory;
 
   struct tgl_update_callback callback;
@@ -736,6 +737,8 @@ int tgl_secret_chat_for_user (struct tgl_state *TLS, tgl_peer_id_t user_id);
 void tgl_set_binlog_mode (struct tgl_state *TLS, int mode);
 void tgl_set_binlog_path (struct tgl_state *TLS, const char *path);
 void tgl_set_auth_file_path (struct tgl_state *TLS, const char *path);
+void tgl_set_state_file_path (struct tgl_state *TLS, const char *path);
+void tgl_set_secret_chat_file_path (struct tgl_state *TLS, const char *path);
 void tgl_set_download_directory (struct tgl_state *TLS, const char *path);
 void tgl_set_callback (struct tgl_state *TLS, struct tgl_update_callback *cb);
 void tgl_set_rsa_key (struct tgl_state *TLS, const char *key);
