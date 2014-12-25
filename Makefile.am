@@ -3,54 +3,60 @@ CLEANFILES =
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 AM_MAKEFLAGS = --no-print-directory
 
+##bin_PROGRAMS = tgl_generate
+
 AM_CPPFLAGS = \
 	-include $(top_builddir)/config.h \
 	-DSYSCONFDIR=\""$(sysconfdir)"\" \
 	-DLIBEXECDIR=\""$(libexecdir)"\" \
-	-I${top_srcdir}/src/tgl \
-	-I${top_srcdir}/src
+	-I${top_srcdir} @CPPFLAGS@ @OPENSSL_INCLUDES@
 
 AM_CFLAGS = ${my_CFLAGS} \
-	-fvisibility=hidden \
-	-ffunction-sections \
-	-fdata-sections
+	-Wall \
+	-Wextra \
+	-Werror \
+	-Wno-deprecated-declarations \
+	-fno-strict-aliasing \
+	-fno-omit-frame-pointer \
+	-ggdb \
+	-Wno-unused-parameter \
+	-fPIC \
+	@CFLAGS@
 
 AM_LDFLAGS = \
 	-Wl,--gc-sections \
-	-Wl,--as-needed
+	@LDFLAGS@
+
 
 LIBTGL_CURRENT=1
 LIBTGL_REVISION=0
 LIBTGL_AGE=1
 
+##include ${top_srcdir}/Makefile.tl-parser
+
 pkginclude_HEADERS = tgl.h tgl-layout.h
 lib_LTLIBRARIES = libtgl.la
 
-src_libtgl_la_SOURCES =\
-	tgl.c
-	mtproto-common.c
-	mtproto-client.c
-	queries.c
-	structures.c
-	binlog.c
-	auto/auto.c
-	updates.c
-	tg-mime-types.c
+libtgl_la_SOURCES =\
+	auto/auto.c \
+	auto/constants.h \
+	auto/auto-header.h \
+	binlog.c \
+	mtproto-client.c \
+	mtproto-common.c \
+	queries.c \
+	structures.c \
+	tg-mime-types.c \
+	tgl-serialize.c \
+	tgl.c \
+	tgl.h \
+	updates.c \
+	tools.c
 
-##EXTRA_DIST += src/libtgl.sym
+libtgl_la_LDFLAGS = $(AM_LDFLAGS) \
+	-version-info $(LIBTGL_CURRENT):$(LIBTGL_REVISION):$(LIBTGL_AGE) \
+	@OPENSSL_LIBS@ @OPENSSL_LDFLAGS@
 
-src_libtgl_la_LDFLAGS = $(AM_LDFLAGS) \
-	-version-info $(LIBtgl_CURRENT):$(LIBtgl_REVISION):$(LIBtgl_AGE)
-##	-Wl,--version-script=$(top_srcdir)/src/libtgl.sym
-##src_libtgl_la_DEPENDENCIES = ${top_srcdir}/src/libtgl.sym
-
-##pkgconfigdir = $(libdir)/pkgconfig
-##pkgconfig_DATA = src/libtgl.pc
-##EXTRA_DIST += src/libtgl.pc.in
-##CLEANFILES += src/libtgl.pc
-
-##TESTS = src/test-libtgl
-
-##check_PROGRAMS = src/test-libtgl
-##src_test_libtgl_SOURCES = src/test-libtgl.c
-##src_test_libtgl_LDADD = src/libtgl.la
+##tgl_generate_SOURCES = \
+##	generate.c \
+##	tools.c
