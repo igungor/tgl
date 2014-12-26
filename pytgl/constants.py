@@ -73,6 +73,7 @@ tgl_sce_committed = 3
 
 _TGL_HEADERS = r"""
 typedef unsigned long size_t;
+
 struct tgl_serialize_callback {
     const char *(*get_auth_key_filename) (void);
     const char *(*get_state_filename) (void);
@@ -80,6 +81,11 @@ struct tgl_serialize_callback {
 };
 
 extern struct tgl_serialize_methods tgl_file_methods;
+
+extern struct tgl_net_methods tgl_conn_methods;
+
+extern struct tgl_timer_methods tgl_libevent_timers;
+
 #define FLAG_MESSAGE_EMPTY 1
 #define FLAG_DELETED 2
 #define FLAG_FORBIDDEN 4
@@ -525,6 +531,7 @@ struct tgl_message {
     };
   };
 };
+
 #define TGL_MAX_DC_NUM 100
 #define TG_SERVER_DEFAULT 4
 #define TG_SERVER_TEST_DEFAULT 2

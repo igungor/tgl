@@ -57,7 +57,7 @@ def preprocess(source, keep_defines=False):
         source = re.sub(r'^\s*#define.*?".*?[^\\]\n', '', source, flags=re.MULTILINE)
 
         #remove #define __TGL_H__ line
-        source = re.sub(r'^\s*#define.*?_H__.*?[^\\]\n', '', source, flags=re.MULTILINE)
+        source = re.sub(r'^\s*#define.*?_H__.*?$', '', source, flags=re.MULTILINE)
 
     source = re.sub('\n{3,}', '\n\n', source)
     return source
@@ -74,6 +74,8 @@ typedef unsigned long size_t;
 '''
 
     source += read_header(tgl_source_dir, 'tgl-serialize.h')
+    source += read_header(tgl_source_dir, 'tgl-net.h')
+    source += read_header(tgl_source_dir, 'tgl-timers.h')
     source += read_header(tgl_source_dir, 'tgl-layout.h')
     source += read_header(tgl_source_dir, 'tgl.h')
 
