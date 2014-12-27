@@ -16,10 +16,20 @@ from . import constants
 
 VERSION = '0.0.1'
 
-TGL_LIB = 'libtgl.so'
+def dlopen(ffi, names):
+    """Try various names for the same library, for different platforms."""
+    for name in names:
+        try:
+            return ffi.dlopen(name)
+        except OSError:
+            pass
+    # Re-raise the exception.
+    return ffi.dlopen(names[0])
+
+TGL_LIBS = ['libtgl.so', 'libtgl.0.dylib']
 
 ffi = FFI()
 ffi.cdef(constants._TGL_HEADERS)
-tgl = ffi.dlopen(TGL_LIB)
+tgl = dlopen(ffi, TGL_LIBS)
 
 from .constants import *
