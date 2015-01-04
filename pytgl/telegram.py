@@ -78,11 +78,20 @@ class Telegram(object):
     def load_auth(self):
         self._state.serialize_methods.load_auth(self._state)
 
+    def store_auth(self):
+        self._state.serialize_methods.store_auth(self._state)
+
     def load_state(self):
         self._state.serialize_methods.load_state(self._state)
 
+    def store_state(self):
+        self._state.serialize_methods.store_state(self._state)
+
     def load_secret_chats(self):
         self._state.serialize_methods.load_secret_chats(self._state)
+
+    def store_secret_chats(self):
+        self._state.serialize_methods.store_secret_chats(self._state)
 
     def loop(self, flags = 0, is_end = None):
         if is_end is None:
