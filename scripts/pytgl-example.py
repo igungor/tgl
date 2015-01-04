@@ -3,7 +3,7 @@
 import sys
 import os
 
-from pytgl.telegram import Telegram
+from pytgl.telegram import Telegram, tgl
 from pytgl import ffi
 
 
@@ -158,11 +158,30 @@ tg.load_auth()
 tg.load_state()
 tg.load_secret_chats()
 
-@ffi.callback("int (*all_auth)(void)")
 def all_auth():
     return int(tg.all_authorized())
 
 tg.loop(0, all_auth)
 
+if not tgl.tgl_signed_dc (tg._state, tg._state.DC_working):
+    #TODO: do registration/login stuff
+    print "Please login and/or register through telegram-cli first... "
+    sys.exit(1)
+
+tgl.tglm_send_all_unsent(tg._state)
+
+diff_success = 0
+@ffi.callback("void (*)(struct tgl_state *, void *, int)")
+def get_diff_cb(tls, extra, success):
+    global diff_success
+    if success:
+        diff_success = 1
 
 
+tgl.tgl_do_get_difference(tg._state, 0, get_diff_cb, ffi.NULL)
+
+tg.loop(0, lambda: diff_success)
+
+tg._state.started = 1
+
+tg.loop()
