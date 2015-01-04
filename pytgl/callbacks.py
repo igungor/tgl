@@ -228,7 +228,9 @@ def generate_tgl_update():
     cb.our_id = _tgl_upd_our_id_cb
     cb.notification = _tgl_upd_notification_cb
     cb.user_status_update = _tgl_upd_user_status_update_cb
-    cb.create_print_name = _tgl_upd_create_print_name_cb
+
+    #use the default implementation
+    #cb.create_print_name = _tgl_upd_create_print_name_cb
 
     return cb
 

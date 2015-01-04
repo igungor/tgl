@@ -104,11 +104,6 @@ def _tgl_upd_user_status_update_cb(tls, user):
     pass
 
 
-@ffi.callback("char *(struct tgl_state *, tgl_peer_id_t, const char *,const char *,const char *, const char *)")
-def _tgl_upd_create_print_name_cb(tls, id_, a1, a2, a3, a4):
-    print "_tgl_upd_create_print_name_cb"
-    pass
-
 def generate_tgl_update():
     from cffi import FFI
     ffi_ = FFI()
