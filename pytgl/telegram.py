@@ -91,5 +91,5 @@ class Telegram(object):
         s = self._state
         max_dc = s.max_dc_num
         return all([tgl.tgl_authorized_dc(s, s.DC_list[i])
-                   for i in range(max_dc)])
+                   for i in range(1, max_dc+1)]) #WTF!!!
 
