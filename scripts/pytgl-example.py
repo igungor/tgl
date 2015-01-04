@@ -155,8 +155,14 @@ tg.set_state_file(os.path.expanduser('~/.telegram-cli/state'))
 tg.set_secret_chat_file(os.path.expanduser('~/.telegram-cli/secret'))
 
 tg.load_auth()
-tg.load_secret_chats()
 tg.load_state()
+tg.load_secret_chats()
 
-print tg.all_authorized()
-tg.loop()
+@ffi.callback("int (*all_auth)(void)")
+def all_auth():
+    return int(tg.all_authorized())
+
+tg.loop(0, all_auth)
+
+
+
