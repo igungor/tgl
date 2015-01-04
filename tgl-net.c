@@ -124,6 +124,14 @@ static void delete_connection_buffer (struct connection_buffer *b) {
   tfree (b, sizeof (*b));
 }
 
+void tgln_set_evbase(struct tgl_state *TLS) {
+
+  if (!TLS->ev_base) {
+    struct event_base *ev = event_base_new ();
+    tgl_set_ev_base (TLS, ev);
+  }
+}
+
 int tgln_write_out (struct connection *c, const void *_data, int len) {
   struct tgl_state *TLS = c->TLS;
   vlogprintf (E_DEBUG, "write_out: %d bytes\n", len);

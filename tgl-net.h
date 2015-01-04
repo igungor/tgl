@@ -21,4 +21,5 @@
 #define __NET_H__
 
 extern struct tgl_net_methods tgl_conn_methods;
+void tgln_set_evbase(struct tgl_state *TLS);
 #endif

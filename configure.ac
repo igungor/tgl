@@ -63,7 +63,7 @@ AC_ARG_ENABLE(libevent,[include libevent-based net and timers],
     AC_CHECK_HEADER(event2/event.h, [AC_DEFINE([EVENT_V2], [1], [Use libevent v2])], [
       AC_CHECK_HEADER(event.h, [AC_DEFINE([EVENT_V1], [1], [Use libevent v1])], [AC_MSG_ERROR([no libevent found])])
     ])
-    EXTRA_OBJECTS='tgl-net.lo tgl-timers.lo'
+    EXTRA_OBJECTS='tgl-net.lo tgl-timers.lo tgl-eventloop.lo'
   fi
   ],[
   ])

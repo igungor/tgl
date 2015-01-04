@@ -23,6 +23,7 @@ class Telegram(object):
         self._rsa_keypath = rsa_key
 
         self.set_callback(update_callbacks)
+        tgl.tgln_set_evbase(self._state)
 
         self.set_net_methods(ffi.addressof(tgl.tgl_conn_methods))
         self.set_timer_methods(ffi.addressof(tgl.tgl_libevent_timers))
@@ -82,3 +83,13 @@ class Telegram(object):
 
     def load_secret_chats(self):
         self._state.serialize_methods.load_secret_chats(self._state)
+
+    def loop(self, flags = 0, is_end = 0):
+        tgl.wait_for_event(self._state, flags, ffi.NULL)
+
+    def all_authorized(self):
+        s = self._state
+        max_dc = s.max_dc_num
+        return all([tgl.tgl_authorized_dc(s, s.DC_list[i])
+                   for i in range(max_dc)])
+

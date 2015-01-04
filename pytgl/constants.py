@@ -83,6 +83,7 @@ struct tgl_serialize_callback {
 extern struct tgl_serialize_methods tgl_file_methods;
 
 extern struct tgl_net_methods tgl_conn_methods;
+void tgln_set_evbase(struct tgl_state *TLS);
 
 extern struct tgl_timer_methods tgl_libevent_timers;
 
@@ -531,6 +532,8 @@ struct tgl_message {
     };
   };
 };
+
+void wait_for_event (struct tgl_state *TLS, int flags, int (*is_end)(void));
 
 #define TGL_MAX_DC_NUM 100
 #define TG_SERVER_DEFAULT 4
