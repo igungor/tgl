@@ -84,8 +84,13 @@ class Telegram(object):
     def load_secret_chats(self):
         self._state.serialize_methods.load_secret_chats(self._state)
 
-    def loop(self, flags = 0, is_end = ffi.NULL):
-        tgl.wait_for_event(self._state, flags, is_end)
+    def loop(self, flags = 0, is_end = None):
+        if is_end is None:
+            cb = ffi.NULL
+        else:
+            cb = ffi.callback("int (*)(void)", is_end)
+
+        tgl.wait_for_event(self._state, flags, cb)
 
     def all_authorized(self):
         s = self._state
