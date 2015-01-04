@@ -616,6 +616,34 @@ void bl_do_msg_set_oubound (struct tgl_state *TLS, long long id);
 
 void bl_do_reset_authorization (struct tgl_state *TLS);
 
+char *tgls_default_create_print_name (struct tgl_state *TLS, tgl_peer_id_t id, const char *a1, const char *a2, const char *a3, const char *a4);
+
+void tgls_free_user (struct tgl_state *TLS, struct tgl_user *U);
+void tgls_free_chat (struct tgl_state *TLS, struct tgl_chat *U);
+void tgls_free_photo (struct tgl_state *TLS, struct tgl_photo *P);
+void tgls_free_message (struct tgl_state *TLS, struct tgl_message *M);
+void tgls_clear_message (struct tgl_state *TLS, struct tgl_message *M);
+
+struct tgl_message *tglm_message_alloc (struct tgl_state *TLS, long long id);
+void tglm_message_insert_tree (struct tgl_state *TLS, struct tgl_message *M);
+void tglm_update_message_id (struct tgl_state *TLS, struct tgl_message *M, long long id);
+void tglm_message_insert (struct tgl_state *TLS, struct tgl_message *M);
+void tglm_message_insert_unsent (struct tgl_state *TLS, struct tgl_message *M);
+void tglm_message_remove_unsent (struct tgl_state *TLS, struct tgl_message *M);
+void tglm_send_all_unsent (struct tgl_state *TLS);
+void tglm_message_remove_tree (struct tgl_state *TLS, struct tgl_message *M);
+void tglm_message_add_peer (struct tgl_state *TLS, struct tgl_message *M);
+void tglm_message_del_peer (struct tgl_state *TLS, struct tgl_message *M);
+void tglm_message_del_use (struct tgl_state *TLS, struct tgl_message *M);
+void tglm_message_add_use (struct tgl_state *TLS, struct tgl_message *M);
+
+void tglp_peer_insert_name (struct tgl_state *TLS, tgl_peer_t *P);
+void tglp_peer_delete_name (struct tgl_state *TLS, tgl_peer_t *P);
+void tglp_insert_encrypted_chat (struct tgl_state *TLS, tgl_peer_t *P);
+void tglp_insert_user (struct tgl_state *TLS, tgl_peer_t *P);
+void tglp_insert_chat (struct tgl_state *TLS, tgl_peer_t *P);
+enum tgl_typing_status tglf_fetch_typing (void);
+
 void wait_for_event (struct tgl_state *TLS, int flags, int (*is_end)(void));
 
 #define TGL_MAX_DC_NUM 100
