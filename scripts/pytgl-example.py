@@ -155,17 +155,71 @@ tg.load_auth()
 tg.load_state()
 tg.load_secret_chats()
 
-def all_auth():
-    return int(tg.all_authorized())
+#tgl.bl_do_reset_authorization(tg._state)
 
-tg.loop(0, all_auth)
+tg.loop(0, lambda: int(tg.all_authorized()))
+print "All DCs are authorized."
+
+for i in range(1, tg._state.max_dc_num+1):
+    if tg._state.DC_list[i] and not tgl.tgl_authorized_dc(tg._state, tg._state.DC_list[i]):
+        assert False
 
 if not tgl.tgl_signed_dc (tg._state, tg._state.DC_working):
-    #TODO: do registration/login stuff
-    print "Please login and/or register through telegram-cli first... "
-    sys.exit(1)
+    username = raw_input("Telephone number (with '+' sign): ")
+
+    registered = False
+    hash_ = None
+
+    @ffi.callback("void (*)(struct tgl_state *, void *, int , int , const char *)")
+    def sign_in_cb(tls, extra, success, registeredarg, mhasharg):
+        global registered
+        global hash_
+
+        if success:
+            registered = registeredarg
+            hash_ = mhasharg
+
+    tgl.tgl_do_send_code (tg._state, username, sign_in_cb, ffi.NULL);
+    tg.loop(0, lambda: hash_ is not None)
+
+    if registered:
+        print 'Code from SMS (if you did not receive an SMS and want' \
+              ' to be called, type "call"): ',
+
+        while True:
+            code = raw_input()
+            if code.strip() == 'call':
+                tgl.tgl_do_phone_call (tg._state, username, hash_, ffi.NULL, ffi.NULL);
+                print "Code: ",
+                continue
+
+            signed_in = False
+            @ffi.callback('void (*)(struct tgl_state *TLSR, void *extra, int' \
+                          ' success, struct tgl_user *U)')
+            def sign_in_result_cb(tls, extra, success, user):
+                global signed_in
+                if success:
+                    signed_in = True
+
+            if tgl.tgl_do_send_code_result(tg._state, username, hash_, code,
+                    sign_in_result_cb, ffi.NULL) >= 0:
+                break
+            print "Invalid code. Try again: ",
+
+    else:
+        print "Registeration is not implemented yet..."
+        sys.exit(0)
+
+for i in range(1, tg._state.max_dc_num+1):
+    if tg._state.DC_list[i] and not tgl.tgl_signed_dc(tg._state, tg._state.DC_list[i]):
+        tgl.tgl_do_export_auth(tg._state, i-1, ffi.NULL, tg._state.DC_list[i])
+        tg.loop(0, lambda: tgl.tgl_signed_dc(tg._state, tg._state.DC_list[i]))
+        assert tgl.tgl_signed_dc(tg._state, tg._state.DC_list[i])
+
+tg.store_auth()
 
 tgl.tglm_send_all_unsent(tg._state)
+print "All unsent msgs are sent."
 
 diff_success = 0
 @ffi.callback("void (*)(struct tgl_state *, void *, int)")
@@ -178,7 +232,9 @@ def get_diff_cb(tls, extra, success):
 tgl.tgl_do_get_difference(tg._state, 0, get_diff_cb, ffi.NULL)
 
 tg.loop(0, lambda: diff_success)
+print "Got difference."
 
 tg._state.started = 1
 
+print "Entering main loop..."
 tg.loop()
