@@ -77,6 +77,7 @@ typedef unsigned long size_t;
     source += read_header(tgl_source_dir, 'tgl-net.h')
     source += read_header(tgl_source_dir, 'tgl-timers.h')
     source += read_header(tgl_source_dir, 'tgl-layout.h')
+    source += read_header(tgl_source_dir, 'tgl-binlog.h')
     source += read_header(tgl_source_dir, 'tgl-eventloop.h')
     source += read_header(tgl_source_dir, 'tgl.h')
 
