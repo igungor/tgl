@@ -8,7 +8,7 @@ from pytgl import ffi
 
 
 def print_message(tls, msg):
-    print "new msg: ", msg.message
+    print "new msg: ", ffi.string(msg.message)
 
 @ffi.callback("void(struct tgl_state *, struct tgl_message *)")
 def _tgl_upd_new_msg_cb(tls, msg):
