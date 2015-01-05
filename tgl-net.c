@@ -132,6 +132,16 @@ void tgln_set_evbase(struct tgl_state *TLS) {
   }
 }
 
+void tgln_set_signal_handler (struct tgl_state *TLS, int sig,
+        void (*signal_cb) (int fd, short event, void *arg)) {
+
+    struct event *signal_int;
+    struct event_base *base = TLS->ev_base;
+
+    signal_int = evsignal_new(base, sig, signal_cb, NULL);
+    event_add(signal_int, NULL);
+}
+
 int tgln_write_out (struct connection *c, const void *_data, int len) {
   struct tgl_state *TLS = c->TLS;
   vlogprintf (E_DEBUG, "write_out: %d bytes\n", len);

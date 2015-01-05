@@ -84,6 +84,8 @@ extern struct tgl_serialize_methods tgl_file_methods;
 
 extern struct tgl_net_methods tgl_conn_methods;
 void tgln_set_evbase(struct tgl_state *TLS);
+void tgln_set_signal_handler (struct tgl_state *TLS, int sig,
+                void (*signal_cb) (int fd, short event, void *arg));
 
 extern struct tgl_timer_methods tgl_libevent_timers;
 

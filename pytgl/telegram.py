@@ -5,6 +5,11 @@ from .callbacks import *
 import os
 import tempfile
 import sys
+import signal
+
+@ffi.callback('void (*signal_cb) (int fd, short event, void *arg)')
+def signal_cb(fd, event, arg):
+    os._exit(0)
 
 class Telegram(object):
     def __init__(self,
@@ -56,6 +61,9 @@ class Telegram(object):
         self.load_auth()
         self.load_state()
         self.load_secret_chats()
+
+        tgl.tgln_set_signal_handler(self._state, signal.SIGINT, signal_cb)
+
 
     def set_callback(self, cb):
         tgl.tgl_set_callback(self._state, cb)
