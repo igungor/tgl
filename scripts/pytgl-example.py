@@ -25,6 +25,8 @@ upd_cb.msg_receive = _msg_cb
 tg = Telegram(rsa_key = sys.argv[1],
               update_callbacks = upd_cb)
 
+#tg._state.verbosity = 6
+
 #tg.reset_authorization()
 tg.wait_until_authorization()
 tg.check_authorization()
