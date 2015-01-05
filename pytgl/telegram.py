@@ -177,14 +177,13 @@ class Telegram(object):
                         print("Code: ", end=' ')
                         continue
 
-                    global _signed_in
-                    _signed_in = False
+                    signed_in = False
                     @ffi.callback('void (*)(struct tgl_state *TLSR, void *extra, int' \
                                   ' success, struct tgl_user *U)')
                     def sign_in_result_cb(tls, extra, success, user):
-                        global _signed_in
+                        nonlocal signed_in
                         if success:
-                            _signed_in = True
+                            signed_in = True
 
                     if tgl.tgl_do_send_code_result(self._state, username,
                             hash_, code.encode(), sign_in_result_cb, ffi.NULL) >= 0:
