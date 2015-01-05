@@ -207,7 +207,7 @@ if not tgl.tgl_signed_dc (tg._state, tg._state.DC_working):
             print "Invalid code. Try again: ",
 
     else:
-        print "Registeration is not implemented yet..."
+        print "Registration is not implemented yet..."
         sys.exit(0)
 
     tg.loop(0, lambda: int(signed_in))
