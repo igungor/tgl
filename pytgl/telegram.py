@@ -4,6 +4,7 @@ from .callbacks import *
 
 import os
 import tempfile
+import sys
 
 class Telegram(object):
     def __init__(self,
