@@ -134,6 +134,7 @@ class Telegram(object):
         for i in range(1, self._state.max_dc_num+1):
             if self._state.DC_list[i] and not tgl.tgl_authorized_dc(self._state, self._state.DC_list[i]):
                 raise Exception("DC[%d] is not authorized." % (i-1))
+        return True
 
     def wait_until_authorization(self):
         self.loop(0, lambda: int(self.all_authorized()))
@@ -143,7 +144,7 @@ class Telegram(object):
         tgl.bl_do_reset_authorization(self._state)
 
     def signed_in(self):
-        tgl.tgl_signed_dc (self._state, self._state.DC_working)
+        return tgl.tgl_signed_dc (self._state, self._state.DC_working)
 
     def sign_in(self):
         if not self.signed_in():
