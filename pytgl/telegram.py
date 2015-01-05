@@ -206,16 +206,16 @@ class Telegram(object):
     def send_all_unsent(self):
         tgl.tglm_send_all_unsent(self._state)
 
-    def get_difference(self):
+    def get_difference(self, sync_from_start = 0):
         diff_success = 0
         @ffi.callback("void (*)(struct tgl_state *, void *, int)")
         def get_diff_cb(tls, extra, success):
-            global diff_success
+            nonlocal diff_success
             if success:
                 diff_success = 1
 
 
-        tgl.tgl_do_get_difference(self._state, 0, get_diff_cb, ffi.NULL)
+        tgl.tgl_do_get_difference(self._state, sync_from_start, get_diff_cb, ffi.NULL)
 
         self.loop(0, lambda: diff_success)
         self._state.started = 1
