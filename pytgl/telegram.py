@@ -199,7 +199,7 @@ class Telegram(object):
     def check_sign_in(self):
         for i in range(1, self._state.max_dc_num+1):
             if self._state.DC_list[i] and not tgl.tgl_signed_dc(self._state, self._state.DC_list[i]):
-                tgl.tgl_do_export_auth(self._state, i-1, ffi.NULL, self._state.DC_list[i])
+                tgl.tgl_do_export_auth(self._state, i, ffi.NULL, self._state.DC_list[i])
                 self.loop(0, lambda: tgl.tgl_signed_dc(self._state, self._state.DC_list[i]))
                 assert tgl.tgl_signed_dc(self._state, self._state.DC_list[i])
 
