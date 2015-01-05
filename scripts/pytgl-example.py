@@ -210,6 +210,8 @@ if not tgl.tgl_signed_dc (tg._state, tg._state.DC_working):
         print "Registeration is not implemented yet..."
         sys.exit(0)
 
+    tg.loop(0, lambda: int(signed_in))
+
 for i in range(1, tg._state.max_dc_num+1):
     if tg._state.DC_list[i] and not tgl.tgl_signed_dc(tg._state, tg._state.DC_list[i]):
         tgl.tgl_do_export_auth(tg._state, i-1, ffi.NULL, tg._state.DC_list[i])
