@@ -16,6 +16,7 @@ AM_INIT_AUTOMAKE([
 ])
 
 AC_PROG_MAKE_SET
+AM_PATH_PYTHON([3.2])
 
 
 m4_include([m4_ax_check_openssl.m4])

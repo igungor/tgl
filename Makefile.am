@@ -64,6 +64,14 @@ libtgl_la_LDFLAGS = \
 	-version-info $(LIBTGL_CURRENT):$(LIBTGL_REVISION):$(LIBTGL_AGE) \
 	$(OPENSSL_LIBS) $(OPENSSL_LDFLAGS)
 
+pytgl_PYTHON = \
+			   pytgl/__init__.py \
+			   pytgl/telegram.py \
+			   pytgl/callbacks.py \
+			   pytgl/constants.py
+
+pytgldir = $(pythondir)/pytgl
+
 tgl_generate_SOURCES = \
 	generate.c \
 	tools.c
