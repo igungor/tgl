@@ -18,7 +18,7 @@ def _msg_cb(tls, msg):
         pass #TODO: implement
         return
 
-    if not tgl.tgl_get_peer_type(msg.to_id):
+    if not msg.to_id.type:
         return
 
     if msg.message and len(ffi.string(msg.message)):
