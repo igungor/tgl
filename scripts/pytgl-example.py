@@ -3,13 +3,26 @@
 import sys
 
 from pytgl.telegram import Telegram
-from pytgl import ffi
+from pytgl import ffi, tgl
 from pytgl.callbacks import generate_tgl_update
 
 
 @ffi.callback("void(struct tgl_state *, struct tgl_message *)")
 def _msg_cb(tls, msg):
-    print("New message: ", ffi.string(msg.message).decode())
+    assert msg
+    if msg.flags & (tgl.FLAG_MESSAGE_EMPTY | tgl.FLAG_DELETED):
+        return
+    if not (msg.flags & tgl.FLAG_CREATED):
+        return
+    if msg.service:
+        pass #TODO: implement
+        return
+
+    if not tgl.tgl_get_peer_type(msg.to_id):
+        return
+
+    if msg.message and len(ffi.string(msg.message)):
+        print("New message: ", ffi.string(msg.message).decode())
 
 
 if len(sys.argv) != 2:
