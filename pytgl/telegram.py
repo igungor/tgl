@@ -206,9 +206,14 @@ class Telegram(object):
             self.loop(0, lambda: int(signed_in))
 
     def check_sign_in(self):
+
+        @ffi.callback("void (*)(struct tgl_state *TLSR, void *DC, int success)")
+        def cb(tls, dc, success):
+            assert success
+
         for i in range(1, self._state.max_dc_num+1):
             if self._state.DC_list[i] and not tgl.tgl_signed_dc(self._state, self._state.DC_list[i]):
-                tgl.tgl_do_export_auth(self._state, i, ffi.NULL, self._state.DC_list[i])
+                tgl.tgl_do_export_auth(self._state, i, cb, self._state.DC_list[i])
                 self.loop(0, lambda: tgl.tgl_signed_dc(self._state, self._state.DC_list[i]))
                 assert tgl.tgl_signed_dc(self._state, self._state.DC_list[i])
 
@@ -217,14 +222,18 @@ class Telegram(object):
 
     def get_difference(self, sync_from_start = 0):
         diff_success = 0
+
         @ffi.callback("void (*)(struct tgl_state *, void *, int)")
         def get_diff_cb(tls, extra, success):
             nonlocal diff_success
-            if success:
-                diff_success = 1
+            assert success
+            diff_success = 1
 
 
         tgl.tgl_do_get_difference(self._state, sync_from_start, get_diff_cb, ffi.NULL)
 
         self.loop(0, lambda: diff_success)
+        assert not (self._state.locks & tgl.TGL_LOCK_DIFF)
+
         self._state.started = 1
+
