@@ -38,7 +38,7 @@
 #define FLAG_ENCRYPTED 4096
 #define FLAG_PENDING 8192
 
-//#pragma pack(push,4)
+#pragma pack(push,1)
 
 typedef struct { int type; int id; } tgl_peer_id_t;
 
@@ -469,5 +469,5 @@ struct tgl_message {
     };
   };
 };
-//#pragma pack(pop)
+#pragma pack(pop)
 #endif

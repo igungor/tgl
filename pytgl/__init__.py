@@ -29,7 +29,7 @@ def dlopen(ffi, names):
 TGL_LIBS = ['libtgl.so', 'libtgl.0.dylib']
 
 ffi = FFI()
-ffi.cdef(constants._TGL_HEADERS)
+ffi.cdef(constants._TGL_HEADERS, packed=True)
 tgl = dlopen(ffi, TGL_LIBS)
 
 from .constants import *
