@@ -22,6 +22,7 @@
 #ifndef __TGL_SERIALIZE_H__
 #define __TGL_SERIALIZE_H__
 
+#pragma pack(push, 1)
 struct tgl_serialize_callback {
     const char *(*get_auth_key_filename) (void);
     const char *(*get_state_filename) (void);
@@ -29,5 +30,6 @@ struct tgl_serialize_callback {
 };
 
 extern struct tgl_serialize_methods tgl_file_methods;
+#pragma pack(pop)
 
 #endif /* defined(__TGL_SERIALIZE_H__) */
